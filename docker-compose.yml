@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - socket:/socket
+    ports:
+      - 80:80
+    depends_on:
+      - "flask"
+    networks:
+      - all
+  db:
+    image: mariadb:10.5.8-focal
+    container_name: production_db
+    environment:
+      MYSQL_ROOT_PASSWORD: MP28l43FX
+      MYSQL_DATABASE: archive
+      MYSQL_USER: "archive@%"
+      MYSQL_PASSWORD: Meeloomi3coo2ahthaitahg
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - all
+  flask:
+      tty: true
+      container_name: flask
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      environment:
+        DATABASE_URL: mysql+pymysql://archive:Meeloomi3coo2ahthaitahg0eingiido@db/archive
+      depends_on:
+        - db
+      expose:
+        - 3000
+      command: uwsgi --ini ./uwsgi.ini
+      volumes:
+        - socket:/socket
+      networks:
+        - all
+volumes:
+  db:
+  socket:
+networks:
+  all:

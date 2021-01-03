@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Not Found{% endblock %}
+
+
+{% block content %}
+
+<DIV CLASS="leftside">
+
+    <div class="alert alert-danger" role="alert">
+The page you are looking for is missing. It may have been removed due to a report. <br>
+Go somewhere <a href="{{ url_for('index')}}">nice</a>
+    </div>
+
+
+{% endblock %}

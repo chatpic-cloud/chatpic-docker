@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Reported images{% endblock %}
+
+
+{% import 'macros/pagination.html' as render_pagination %}
+{% set mode = "overview" %}
+
+
+{% block content %}
+        {% if current_user.has_roles('admin') %}
+
+<DIV CLASS="solyan">
+    <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('remove_all_media') }}">Remove all media</a></SPAN>
+															</SPAN>
+        <SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('restore_all_media') }}">Restore all media</a></SPAN>
+															</SPAN>
+    </DIV>
+</DIV>
+{% endif %}
+<DIV CLASS="leftside">
+
+
+    {% if media.items | length == 0 %}
+    <div class="alert alert-primary" role="alert">
+        Nothing found.
+    </div>
+    {% endif %}
+
+
+    {% for report in media.items %}
+    <DIV CLASS="container">
+        <div class="row">
+
+
+            {% for med in [report.media] %}
+            {% include '_image.html' %}
+            {% endfor %}
+
+            <DIV CLASS="kim">
+                {{report.reason}}
+            </DIV>
+            <DIV CLASS="kim">
+                {{report.comment}}
+            </DIV>
+            <DIV CLASS="kim">
+                {{moment(report.date).format('LLLL') }}
+            </DIV>
+            <DIV CLASS="kim">
+                {{report.email}}
+            </DIV>
+            <DIV CLASS="kim">
+                {% if report.status == 'removed' %}
+                Status: <font color="green">{{report.status}}</font>
+                {% elif report.status == 'restored' %}
+                Status: <font color="red">{{report.status}}</font>
+                {% else %}
+                Status: <font color="yellow">{{report.status}}</font>
+
+{% endif %}
+            </DIV>
+
+
+        {% if current_user.has_roles('admin') %}
+        <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('remove_media',md5=report.media_md5)}}">REMOVE File</a></SPAN>
+															</SPAN>
+        </DIV>
+        <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('restore_media',md5=report.media_md5)}}">RESTORE File</a></SPAN>
+															</SPAN>
+        </DIV>
+        {% endif %}
+    </DIV>
+        </DIV>
+
+    {% endfor %}
+
+    {{ render_pagination.render_pagination(media,'reported_media',order_by,username='')}}
+
+</DIV>
+
+{% endblock %}

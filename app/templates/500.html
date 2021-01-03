@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Unknown error{% endblock %}
+
+
+{% block content %}
+
+<DIV CLASS="leftside">
+
+    <div class="alert alert-danger" role="alert">
+Something went horribly wrong. We are already working on it. <br>
+Meanwhile go somewhere <a href="{{ url_for('index')}}">nice</a>
+    </div>
+
+
+{% endblock %}

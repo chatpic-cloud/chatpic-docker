@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin Posts{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto justify-content-center">
+
+
+            <form method="POST" action="">
+
+
+                {{ form.csrf_token }}
+                <div class="row">
+                    <div class="col">
+                        {{ form.title.label }}
+                    </div>
+                    <div class="col">
+                        {{ form.title }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{ form.content.label }}
+                    </div>
+                    <div class="col">
+                        {{ form.content(cols="60", rows="20") }}
+                    </div>
+                </div>
+                <div class="row">
+
+                    {{ form.submit() }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

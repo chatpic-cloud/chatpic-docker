@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% if username is defined %}
+{% set title = 'All images for '+ username %}
+
+	{% elif order_by == "time" %}
+{% set title = 'Latest Images' %}
+	{% elif order_by == "views" %}
+{% set title = 'Most viewed Images' %}
+	{% elif order_by == "votes" %}
+{% set title = 'Best voted Images' %}
+{% else %}
+
+	{% endif %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+{% import 'macros/pagination.html' as render_pagination %}
+{% set mode = "overview" %}
+
+
+{% block content %}
+{% if username is defined %}
+													<DIV CLASS="solyan">
+														<DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a href="{{ url_for('user_media',username=username) }}">All images by {{ username }}</a></SPAN>
+															</SPAN>
+														</DIV>
+														     {% if not current_user.is_anonymous and current_user.has_roles('admin') %}
+
+    <DIV CLASS="kim">
+		<SPAN CLASS="meta-who">
+			<SPAN CLASS="meta-who-data"><a href="{{ url_for('remove_media',md5=username)}}">Nuke User</a></SPAN>
+		</SPAN>
+	</DIV>
+{% endif %}
+													</DIV>
+
+
+{% endif %}
+<DIV CLASS="leftside">
+
+	        {% if media.items | length == 0 %}
+    <div class="alert alert-primary" role="alert">
+Nothing found. Please look for something else.
+    </div>
+    {% endif %}
+
+{% for med in media.items %}
+{% include '_image.html' %}
+
+{% endfor %}
+
+
+{% if username is defined %}
+	{{ render_pagination.render_pagination(media,'user_media',order_by,username=username)}}
+
+	{% elif keyword is defined %}
+{{ render_pagination.render_pagination(media,'w_search',keyword=keyword)}}
+{% else %}
+	{{ render_pagination.render_pagination(media,'all_media',order_by,username='')}}
+
+	{% endif %}
+
+    </DIV>
+
+{% endblock %}

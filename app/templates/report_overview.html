@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Reported images{% endblock %}
+
+
+{% import 'macros/pagination.html' as render_pagination %}
+{% set mode = "overview" %}
+
+
+{% block content %}
+<DIV CLASS="solyan">
+    <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('remove_all_media') }}">Remove all media</a></SPAN>
+															</SPAN>
+        															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('restore_all_media') }}">Restore all media</a></SPAN>
+															</SPAN>
+    </DIV>
+</DIV>
+<DIV CLASS="leftside">
+
+
+        {% if media.items | length == 0 %}
+    <div class="alert alert-primary" role="alert">
+Nothing found.
+    </div>
+    {% endif %}
+
+    {% for med in media.items %}
+    {% include '_image.html' %}
+
+    <DIV CLASS="container">
+<div class="row">
+        {% for report in med.reports %}
+
+        <DIV CLASS="kim">
+            {{report.reason}}</DIV>
+            <DIV CLASS="kim">
+                {{report.comment}}</DIV>
+               <DIV CLASS="kim">
+                {{moment(report.date).format('LLLL')  }}</DIV>
+               <DIV CLASS="kim">
+                {{report.email}}</DIV>
+        {% endfor %}
+
+        <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('remove_media',md5=med.md5)}}">REMOVE File</a></SPAN>
+															</SPAN>
+    </DIV>
+            <DIV CLASS="kim">
+															<SPAN CLASS="meta-who">
+																<SPAN CLASS="meta-who-data"><a
+                                                                        href="{{ url_for('restore_media',md5=med.md5)}}">RESTORE File</a></SPAN>
+															</SPAN>
+    </DIV>
+    </DIV>
+    </DIV>
+    {% endfor %}
+
+
+    {{ render_pagination.render_pagination(media,'reported_media',order_by,username='')}}
+
+</DIV>
+
+{% endblock %}

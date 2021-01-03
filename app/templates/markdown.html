@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Not Found{% endblock %}
+
+
+{% block content %}
+
+<div class="king-part-q-view">
+
+    <DIV CLASS="king-q-view  hentry question" id="q871">
+
+        <DIV CLASS="rightview">
+
+            <DIV CLASS="king-q-view-main">
+                <div class="king-q-view-content">
+                    <div class="text-center"
+                    {% filter markdown %}
+{{ content }}
+{% endfilter %}
+                </div>
+                </div>
+
+                <div class="king-q-view-c-list" style="display:none;" id="c871_list">
+                </div> <!-- END king-c-list -->
+
+            </DIV> <!-- END king-q-view-main -->
+
+        </DIV>
+    </DIV> <!-- END king-q-view -->
+
+
+</div>
+
+{% endblock %}

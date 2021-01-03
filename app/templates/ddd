@@ -1,0 +1,6 @@
+$(".upvote").click(function(){
+        vote($(this).attr("id"));
+    });
+$(".downvote").click(function(){
+        vote($(this).attr("id"));
+    });

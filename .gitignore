@@ -1,0 +1,14 @@
+/venv/
+.idea/
+/app/static/gen/
+/app/static/.webassets-cache/
+/app.db
+/node_modules/
+/app/static/uploads
+venv
+*.pyc
+__pycache__
+app.db
+/migrations/
+/cache/
+/msearch/

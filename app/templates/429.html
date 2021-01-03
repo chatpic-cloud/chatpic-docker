@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Rate limitted, please slow down{% endblock %}
+
+
+{% block content %}
+
+<DIV CLASS="leftside">
+
+    <div class="alert alert-danger" role="alert">
+Slow down. You can only do this {{ e.description }}
+    </div>
+
+
+{% endblock %}

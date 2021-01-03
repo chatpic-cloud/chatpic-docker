@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}News{% endblock %}
+
+{% import 'macros/pagination.html' as render_pagination %}
+
+{% macro admin_view(id) %}
+{% if not current_user.is_anonymous and current_user.has_roles('admin') %}
+<h4><a href="{{ url_for('admin_edit_posts',id=id) }}"><i class="fas fa-edit"></i></a><a class="delete" id="{{ id }}"
+                                                                                        href="#" rel="nofollow"><i
+        class="fas fa-trash-alt"></i></a></h4>
+{% endif %}
+
+{% endmacro %}
+
+
+{% block content %}
+<DIV CLASS="leftside">
+
+
+{% for post in posts.items %}
+
+<div class="king-part-q-view">
+
+    <DIV CLASS="king-q-view  hentry question" id="q871">
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" data-toggle="tab">{{ post.title }}</a></li>
+            <li class="nav-tabs"><a href="#" data-toggle="tab">By {{ post.author.username }}</a></li>
+
+        </ul>
+        <DIV CLASS="rightview">
+
+            <DIV CLASS="king-q-view-main">
+                <div class="king-q-view-content">
+                    <div class="text-center"
+                    {% filter markdown %}
+{{ post.content }}
+{% endfilter %}
+                </div>
+                </div>
+
+                <div class="king-q-view-c-list" style="display:none;" id="c871_list">
+                </div> <!-- END king-c-list -->
+
+            </DIV> <!-- END king-q-view-main -->
+
+            <span class="meta-when">
+                            <span class="meta-when-data">
+                                <span class="published updated">
+                                    <span class="value-title" title="{{ post.date }}">{{ moment(post.date).format('LLLL') }}</span>
+                                </span>
+                            </span>
+                        </span>
+        </DIV>
+    </DIV> <!-- END king-q-view -->
+
+
+</div>
+{% endfor %}
+
+
+<br>
+<div class="king-part-q-view">
+<br>
+    <DIV CLASS="king-q-view" id="q871">
+{{ render_pagination.render_pagination(posts,'index')}}
+    </DIV>
+</div>
+</div>
+
+{% endblock %}
+
+

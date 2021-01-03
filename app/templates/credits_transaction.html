@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Credits Overview{% endblock %}
+
+{% import 'macros/pagination.html' as render_pagination %}
+{% set mode = "overview" %}
+
+
+{% block content %}
+    {% if trans.items | length == 0 %}
+    <div class="alert alert-primary" role="alert">
+        Nothing found.
+    </div>
+    {% endif %}
+<DIV CLASS="leftside">
+
+<div class="king-part-q-view">
+
+    <DIV CLASS="king-q-view  hentry question" id="q871">
+    Buy more Credits
+    </DIV>
+</div>
+
+<table class="table table-striped table-dark">
+    <thead>
+    <tr class="king-top-users-table">
+        <th scope="col">ID</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for transaction in trans.items %}
+    <tr>
+        <th scope="row">{{transaction.id}}</th>
+        <td>{{ transaction.amount }}</td>
+        <td>{{transaction.description}}</td>
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+{{ render_pagination.render_pagination(trans,'get_credit_history')}}
+
+</DIV>
+{% endblock %}
