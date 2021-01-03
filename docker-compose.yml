@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   redis:
-    image: 6.0.9-alpine
+    image: redis:6.0.9-alpine
     networks:
       - all
     deploy:
