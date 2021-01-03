@@ -4,6 +4,8 @@
 
 {% block content %}
 <!-- image -->
+                        <div class="alert alert-info" role="alert">      <strong>NEW!</strong> Get your premium credits now and become a special member of our site. See <a href="{{ url_for('get_credit_history')}}">your credits</a> for details.
+</div>
 													<DIV CLASS="solyan">
 														<DIV CLASS="kim">
 															<SPAN CLASS="meta-who">
@@ -17,13 +19,13 @@
 			<SPAN CLASS="meta-who-data"><a href="" data-toggle="modal" data-target="#modalContactForm">Report Image</a></SPAN>
 		</SPAN>
 	</DIV>
+                                                                                                                {% endif %}
+
     <DIV CLASS="kim">
 		<SPAN CLASS="meta-who">
 			<SPAN CLASS="meta-who-data"><a href="{{ url_for('get_download',md5=med.md5)}}">Download</a></SPAN>
 		</SPAN>
 	</DIV>
-                                                        {% endif %}
-     {% if not current_user.is_anonymous %}
     <DIV CLASS="kim">
 		<SPAN CLASS="meta-who">
 			<SPAN CLASS="meta-who-data"><a href="{{ url_for('remove_media',md5=med.md5)}}">Remove Image (Costs 1.000 Credits)</a></SPAN>
@@ -31,10 +33,11 @@
 	</DIV>
 
 
-     {% endif %}
 																											</DIV>
 
-<div class="leftside">
+
+
+
 	{% if 'mp4' in med.filename %}
 	{% include '_video.html' %}
 	{% else %}
