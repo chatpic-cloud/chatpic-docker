@@ -1,5 +1,13 @@
 version: "3.8"
 services:
+  redis:
+    image: 6.0.9-alpine
+    networks:
+      - all
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
   nginx:
     image: nginx:latest
     container_name: production_nginx
@@ -9,8 +17,6 @@ services:
       - /srv/www/static:/srv/www/static
     ports:
       - 80:80
-    depends_on:
-      - "flask"
     networks:
       - all
     deploy:
@@ -31,9 +37,6 @@ services:
   flask:
       tty: true
       image: chatpic-docker:latest
-      build:
-        context: .
-        dockerfile: ./Dockerfile
       environment:
         DATABASE_URL: mysql+pymysql://archive:Meeloomi3coo2ahthaitahg0eingiido@db/archive
         SECRET_KEY: ong4eivu7Ies2thaep6juowoh2ooYe8eox2ba7oocaik4aemieshiXozaf6Fee6E
@@ -43,10 +46,6 @@ services:
         STORAGE_URL: redis://default:2zi8TS4ldLnSrgGOY5AUYcIQ4vGaIWBo@redis-11027.c52.us-east-1-4.ec2.cloud.redislabs.com:11027
         CACHE_TYPE: filesystem
         CACHE_DIR: /tmp/cache
-      depends_on:
-        - db
-      expose:
-        - 3000
       command: uwsgi --ini ./uwsgi.ini
       volumes:
         - socket:/socket
