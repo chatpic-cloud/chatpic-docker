@@ -25,7 +25,14 @@ services:
         context: .
         dockerfile: ./Dockerfile
       environment:
-        DATABASE_URL: mysql+pymysql://archive:Meeloomi3coo2ahthaitahg0eingiido@db/archive
+        DATABASE_URL: mysql+pymysql://archive:Meeloomi3coo2ahthaitahg0eingiido@@db/archive
+        SECRET_KEY: ong4eivu7Ies2thaep6juowoh2ooYe8eox2ba7oocaik4aemieshiXozaf6Fee6E
+        FILE_STORAGE_LOCATION: /srv/www/static/
+        CDN_URL: https://media.chatpic.exposed/
+        DEBUG: "False"
+        STORAGE_URL: redis://default:2zi8TS4ldLnSrgGOY5AUYcIQ4vGaIWBo@redis-11027.c52.us-east-1-4.ec2.cloud.redislabs.com:11027
+        CACHE_TYPE: filesystem
+        CACHE_DIR: /tmp/cache
       depends_on:
         - db
       expose:
