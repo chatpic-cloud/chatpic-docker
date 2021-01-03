@@ -13,6 +13,10 @@ services:
       - "flask"
     networks:
       - all
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
   db:
     image: mariadb:10.5.8-focal
     container_name: production_db
@@ -20,8 +24,13 @@ services:
       - db:/var/lib/mysql
     networks:
       - all
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
   flask:
       tty: true
+      image: chatpic-docker:latest
       build:
         context: .
         dockerfile: ./Dockerfile
@@ -47,8 +56,10 @@ services:
       stop_grace_period: 30s
       deploy:
         replicas: 3
+        restart_policy:
+          condition: on-failure
         update_config:
-          delay: 10m
+          delay: 1m
           parallelism: 1
           failure_action: rollback
 volumes:
