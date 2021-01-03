@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   nginx:
     image: nginx:latest
@@ -15,18 +15,12 @@ services:
   db:
     image: mariadb:10.5.8-focal
     container_name: production_db
-    environment:
-      MYSQL_ROOT_PASSWORD: MP28l43FX
-      MYSQL_DATABASE: archive
-      MYSQL_USER: "archive@%"
-      MYSQL_PASSWORD: Meeloomi3coo2ahthaitahg
     volumes:
       - db:/var/lib/mysql
     networks:
       - all
   flask:
       tty: true
-      container_name: flask
       build:
         context: .
         dockerfile: ./Dockerfile
@@ -41,6 +35,13 @@ services:
         - socket:/socket
       networks:
         - all
+      stop_grace_period: 30s
+      deploy:
+        replicas: 3
+        update_config:
+          delay: 10m
+          parallelism: 1
+          failure_action: rollback
 volumes:
   db:
   socket:
