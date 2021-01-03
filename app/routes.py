@@ -453,7 +453,6 @@ def webhooks():
         elif event.data.name == '50.000 Credits':
             modify_credit_balance(user, 50000, 'Bought 50.000 Credits')
             assign_role_to_user('free_download', user)
-            assign_role_to_user('free_delete_user', user)
             assign_role_to_user('realtime_access', user)
         elif event.data.name == '100.000 Credits':
             modify_credit_balance(user, 100000, 'Bought 100.000 Credits')
