@@ -89,12 +89,14 @@ def verify():
 def all_media():
     page = request.args.get('page', 1, type=int)
     order_by = request.args.get('order_by', 'time', type=str)
-    if page == 1 or not request.cookies.get('startTime'):
-        start_time = datetime.utcnow()
+    if not current_user.is_anonymous and current_user.has_roles('realtime_access'):
+        if page == 1 or not request.cookies.get('startTime'):
+            start_time = datetime.utcnow()
+        else:
+            start_time = request.cookies.get('startTime')
     else:
-        start_time = request.cookies.get('startTime')
-    # for now, make start time static
-    start_time = datetime.utcnow().replace(microsecond=0, second=0, minute=0)
+        # for now, make start time static
+        start_time = datetime.utcnow().replace(microsecond=0, second=0, minute=0)
 
     if order_by == 'votes':
         media = Media.query.filter(Media.hidden==False, Media.reported==False, Media.votes != 0).order_by(Media.votes.desc()).paginate(
@@ -447,14 +449,17 @@ def webhooks():
         elif event.data.name == '10.000 Credits':
             modify_credit_balance(user, 10000, 'Bought 10.000 Credits')
             assign_role_to_user('free_download', user)
+            assign_role_to_user('realtime_access', user)
         elif event.data.name == '50.000 Credits':
             modify_credit_balance(user, 50000, 'Bought 50.000 Credits')
             assign_role_to_user('free_download', user)
             assign_role_to_user('free_delete_user', user)
+            assign_role_to_user('realtime_access', user)
         elif event.data.name == '100.000 Credits':
             modify_credit_balance(user, 100000, 'Bought 100.000 Credits')
             assign_role_to_user('free_download', user)
             assign_role_to_user('free_delete_user', user)
+            assign_role_to_user('realtime_access', user)
     if not order and event.type == 'charge:created':
         order = Order(id=event.data.id, status=event.type,
                       created_at=datetime.strptime(event.data.created_at, '%Y-%m-%dT%H:%M:%SZ'), item=event.data.name,
