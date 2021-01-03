@@ -35,7 +35,6 @@ services:
       restart_policy:
         condition: on-failure
   flask:
-      tty: true
       image: chatpic-docker:latest
       environment:
         DATABASE_URL: mysql+pymysql://archive:Meeloomi3coo2ahthaitahg0eingiido@db/archive
