@@ -15,11 +15,15 @@ import requests
 
 # sign url to nginx secure link
 
-def assign_role_to_user(role, user):
-    role = Role.query.filter_by(name='free_download').first()
+def assign_role_to_user(role_name, user):
+    role = Role.query.filter_by(name=role_name).first()
     if not role:
         role = Role(name=role)
+        role.name = role_name
         db.session.add(role)
+        print(f'new {role.name}')
+    print(f'assign {role}')
+    print(f'name = {role_name}')
     user.roles.append(role)
     db.session.add(user)
     db.session.commit()
