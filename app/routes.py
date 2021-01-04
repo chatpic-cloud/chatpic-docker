@@ -376,24 +376,17 @@ def remove_media(md5):
 @app.route('/faq')
 def faq():
     markdown = """# Reports
-* What are reasons for reporting an image?
-* How long does it take for the image to be removed?
-* An image can't be reported
+If you believe that your work has been copied in a way that constitutes copyright infringement, please provide our copyright agent the written information specified below. Please note that this procedure is exclusively for notifying chatpic.exposed that your copyrighted material has been infringed.
 
+An electronic or physical signature of the person authorized to act on behalf of the owner of the copyright interest;
+A description of the copyrighted work that you claim has been infringed upon;
+A description of where the material that you claim is infringing is located on the Site;
+Your address, telephone number, and e-mail address;
+A statement by you that you have a good-faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;
+A statement by you, made under penalty of perjury, that the above information in your notice is accurate and that you are the copyright owner or authorized to act on the copyright owner’s behalf.
+A link to the copyrighted material
 
-##  What are reasons for reporting an image?
-You can report an image for any reason available in the drop down field. This includes:
-* *_Nude_* pictures of under age persons
-* pictures which reveal personal information (First name only is acceptable and will not be removed)
-* To a limited extend: Pictures you own the copyright for
-
-## How long does it take for the image to be removed?
-Pictures are marked as reported immediately and will be hidden for everyone except chatpic.exposed staff members. Anyone who previously acquired a download link to the image might be able to access the file for several more minutes. This can't be changed as this is caused by our caching mechanism. After inspection by our staff members, the images will be permanently be removed from our servers within 48 hours.
-
-## An image can't be reported
-We are not here to support your stupidity. As described above, every image can be reported. But there are limits:
-*ANY* image which has been reported more than 2 times will *not* be able to be reported through this process anymore. Please mail an DMCA takedown request including your full contact information, a list of infringing media and proof of ownership to dmca@chatpic.exposed. We will than take care about the issue in 24 hours.
-This requirement will be lifted for pictures of persons under age which have been inadvertently accepted for this site. """
+*Mail your request exclusively to dmca@chatpic.exposed*"""
     return render_template('markdown.html', content=markdown), 200
 
 
