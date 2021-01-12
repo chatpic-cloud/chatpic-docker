@@ -96,7 +96,7 @@ def all_media():
             start_time = request.cookies.get('startTime')
     else:
         # for now, make start time static
-        start_time = datetime.utcnow().replace(microsecond=0, second=0, minute=0)
+        start_time = datetime.utcnow()- timedelta(hours=1)
 
     if order_by == 'votes':
         media = Media.query.filter(Media.hidden==False, Media.reported==False, Media.votes != 0).order_by(Media.votes.desc()).paginate(
