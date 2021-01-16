@@ -1,79 +1,89 @@
+<div class="king-part-q-list">
 
-    <div class="king-part-q-list">
-
-        <div id="container">
-
-
-            <div class="king-q-list-item" id="{{ med.md5 }}">
-                <div class="box">
-                    <div class="boxleft">
+    <div id="container">
+        <div class="king-q-list-item" id="{{ med.md5 }}">
+            <div class="box">
+                <div class="boxleft">
 			<span class="king-q-item-avatar-meta">
 			</span>
-                        <div class="king-voting king-voting-net" id="voting_{{ med.md5 }}">
-                            <DIV CLASS="king-vote-buttons-netup">
-                                <input title="Click to vote up"
-                                       class="king-vote-first-button king-vote-up-button upvote" id="up_{{ med.md5 }}">
-                            </DIV>
-                            <div class="king-vote-count king-vote-count-net">
-					<span class="king-netvote-count">
-						<span class="king-netvote-count-data" id="vote_count_{{ med.md5 }}">{{med.votes }}</span><span class="king-netvote-count-pad"> votes</span>
-					</span>
-                            </div>
-                            <DIV CLASS="king-vote-buttons-netdown">
-                                <input title="Click to vote down" name="king-vote-up-button"
-                                       class="king-vote-second-button king-vote-down-button downvote" id="down_{{ med.md5 }}">
-                            </DIV>
-                            <div class="king-vote-clear">
-                            </div>
-                        </div>
-                    </div>
-                                                                            {% if not med.reported  or (not current_user.is_anonymous and current_user.has_roles('admin')) %}
-
-                    <div class="box_thumb">
-                        <A href="{{ url_for('show_media',md5=med.md5) }}" class="king-hover"></A>
-                        <div data-embed="" class="qstart {% if 'mp4' in med.filename %}video-thumbnail{% endif %}">
-                            <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}{% if mode == "overview" %}{{med.thumbnail }}{% else %}{{med.filename }}{% endif %}"></img>
-                        </div>
-                    </div>
-                    {% else %}
-                                        <div class="box_thumb">
-                        <A href="{{ url_for('show_media',md5=med.md5) }}" class="king-hover"></A>
-                        <div data-embed="" class="qstart">
-                            <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}reported.jpg"></img>
-                        </div>
-                    </div>
-                    {% endif %}
-                    <DIV CLASS="yoriz">
-
-                        <DIV CLASS="king-q-item-title">
-                            <A HREF="{{ url_for('show_media',md5=med.md5)}}">{{ med.title }}</A>
+                    <div class="king-voting king-voting-net" id="voting_{{ med.md5 }}">
+                        <DIV CLASS="king-vote-buttons-netup">
+                            <input title="Click to vote up"
+                                   class="king-vote-first-button king-vote-up-button upvote" id="up_{{ med.md5 }}">
                         </DIV>
-                        <DIV CLASS="yorizbottom">
+                        <div class="king-vote-count king-vote-count-net">
+					<span class="king-netvote-count">
+						<span class="king-netvote-count-data" id="vote_count_{{ med.md5 }}">{{med.votes }}</span><span
+                            class="king-netvote-count-pad"> votes</span>
+					</span>
+                        </div>
+                        <DIV CLASS="king-vote-buttons-netdown">
+                            <input title="Click to vote down" name="king-vote-up-button"
+                                   class="king-vote-second-button king-vote-down-button downvote"
+                                   id="down_{{ med.md5 }}">
+                        </DIV>
+                        <div class="king-vote-clear">
+                        </div>
+                    </div>
+                </div>
+                {% if not med.reported or (not current_user.is_anonymous and current_user.has_roles('admin')) %}
+
+                <div class="box_thumb">
+                    <A href="{{ url_for('show_media',md5=med.md5) }}" class="king-hover"></A>
+                    <div data-embed="" class="qstart {% if 'mp4' in med.filename %}video-thumbnail{% endif %}">
+                        <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}{% if mode == " overview"
+                                                                                                                        %}{{med.thumbnail
+                                                                                                                        }}{%
+                                                                                                                        else
+                                                                                                                        %}{{med.filename
+                                                                                                                        }}{%
+                                                                                                                        endif
+                                                                                                                        %}"></img>
+                    </div>
+                </div>
+                {% else %}
+                <div class="box_thumb">
+                    <A href="{{ url_for('show_media',md5=med.md5) }}" class="king-hover"></A>
+                    <div data-embed="" class="qstart">
+                        <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}reported.jpg"></img>
+                    </div>
+                </div>
+                {% endif %}
+                <DIV CLASS="yoriz">
+
+                    <DIV CLASS="king-q-item-title">
+                        <A HREF="{{ url_for('show_media',md5=med.md5)}}">{{ med.title }}</A>
+                    </DIV>
+                    <DIV CLASS="yorizbottom">
 				<span class="king-a-count king-a-count-zero">
 					<span class="king-a-count-data">{{ med.comment_count }}</span><span class="king-a-count-pad"> Comments</span>
 				</span>
-                            <span class="king-view-count">
+                        <span class="king-view-count">
 					<span class="king-view-count-data">{{ med.views }}</span><span
-                                    class="king-view-count-pad"> views</span>
+                                class="king-view-count-pad"> views</span>
 				</span>
-                            <span class="king-view-count">
+                        <span class="king-view-count">
 					<span class="king-view-count-data">{{ med.reuploads }}</span><span
-                                    class="king-view-count-pad"> reuploads</span>
+                                class="king-view-count-pad"> reuploads</span>
 				</span>
-                <span class="meta-when">
+                        <span class="meta-when">
                     <span class="meta-when-data">
                         <span class="published updated">
                                     <span class="value-title" title="{{ med.upload_time }}">{{ moment(med.upload_time).format('LLLL') }}</span>
                         </span>
                     </span>
                 </span>
-                        </DIV>
-
                     </DIV>
-                </div>
 
-            </div> <!-- END king-q-list-item -->
-        </div>
 
+
+
+
+                </DIV>
+            </div>
+
+        </div> <!-- END king-q-list-item -->
     </div>
+
+</div>
 

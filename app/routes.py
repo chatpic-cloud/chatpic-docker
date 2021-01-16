@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, redirect, url_for, flash, request, make_response, Markup
-from .forms import PostForm, UploadForm, VoteForm, CommentForm, ReportForm
-from .models import Post, Media, Vote, View, Comment, Report, Order, User, CreditTransaction, Role
+from .forms import PostForm, UploadForm, VoteForm, CommentForm, ReportForm, DoxForm
+from .models import Post, Media, Vote, View, Comment, Report, Order, User, CreditTransaction, Role, Girl, Links, Country
 from .services import save_new_image, save_changes, delete_media, extended_mail_validation, sign_url, check_ip, modify_credit_balance, assign_role_to_user
 from app import db, limiter, mail
 from flask_user import roles_required, current_user, user_manager,login_required
@@ -12,19 +12,27 @@ from flask_mail import Message
 
 from coinbase_commerce.error import WebhookInvalidPayload, SignatureVerificationError
 from coinbase_commerce.webhook import Webhook
-
+from pprint import pprint
 
 
 @app.route("/search")
-@limiter.limit("6 per minute")
 def w_search():
     keyword = request.args.get('keyword')
     if keyword.startswith('anon'):
         return redirect(url_for('user_media', username=keyword))
     page = request.args.get('page', 1, type=int)
-    results = db.session.query(Media).filter(FullTextSearch(keyword, Media, FullTextMode.NATURAL)).filter_by(reported=False,hidden=False).paginate(
-        page, app.config['POSTS_PER_PAGE'], True)
-    return render_template('media_overview.html', media=results,keyword=keyword)
+    try:
+        query, total = Media.search(keyword, page,
+                    app.config['POSTS_PER_PAGE'])
+    except:
+        return render_template('500.html'), 500
+
+    next_url = url_for('w_search', keyword=keyword, page=page + 1) \
+        if total > page * app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('w_search', keyword=keyword, page=page - 1) \
+        if page > 1 else None
+    result = {'items':query.all()}
+    return render_template('media_overview.html', media=result,keyword=keyword, page=page, next_url=next_url, prev_url=prev_url)
 
 @app.route('/')
 def index():
@@ -32,7 +40,6 @@ def index():
     #current_user.roles=[role,]
     #db.session.commit()
     page = request.args.get('page', 1, type=int)
-    # posts = [{"title":"Test","date":datetime.utcnow(),"content":"Example content"},{"title":"Test2","date":datetime.utcnow(),"content":"Nulla quos animi officia tempora. Beatae officia doloribus nihil ut aut reprehenderit. Et ratione praesentium perspiciatis rerum voluptatibus quia. Recusandae iure beatae repellat architecto."},{"title":"Test3","date":datetime.utcnow(),"content":"Example content"}]
     posts = Post.query.order_by(Post.date.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], True)
 
@@ -135,6 +142,8 @@ def user_media(username):
 def show_media(md5):
     form = CommentForm()
     report_form = ReportForm()
+    dox_form = DoxForm()
+
     media = Media.query.filter_by(md5=md5, hidden=False).first_or_404()
     view = View.query.filter_by(media_id=media.md5, ip=request.remote_addr).order_by(View.time.desc()).first()
     if not view or datetime.utcnow() > (view.time + timedelta(hours=24)):
@@ -145,7 +154,7 @@ def show_media(md5):
 
     report_email = request.cookies.get('report_mail')
 
-    return render_template('media.html', med=media,form=form, report_form=report_form, report_email=report_email)
+    return render_template('media.html', med=media,form=form, report_form=report_form,dox_form=dox_form, report_email=report_email)
 
 
 @app.route('/media/upload', methods=['POST'])
@@ -253,6 +262,52 @@ def report_file():
                 error
             ), 'error')
     return {'msg': 'could not save report'}, 200
+
+
+@app.route('/girl/dox', methods=['POST'])
+@limiter.limit("10 per minute")
+def dox():
+    form = DoxForm()
+    if form.validate_on_submit():
+        print(form.data)
+        media = Media.query.get(form.data['md5'])
+        if media:
+            girl = Girl.query.filter_by(first_name=form.data['first_name'],last_name=form.data['last_name']).first()
+            if not girl:
+                girl = Girl(first_name=form.data['first_name'],last_name=form.data['last_name'], phone=form.data['phone'], email=form.data['mail'], address=form.data['address'], dob=form.data['dob'])
+            country = Country.query.filter_by(name=form.data['country']).first()
+            if not country:
+                country = Country(name=form.data['country'])
+                db.session.add(country)
+            girl.country=country
+            media.girl=girl
+            db.session.add(girl)
+            db.session.add(media)
+            db.session.commit()
+            if form.data['facebook']:
+                link = Links(url=form.data['facebook'], girl_id=girl.id)
+                db.session.add(link)
+            if form.data['instagram']:
+                link = Links(url=form.data['instagram'], girl_id=girl.id)
+                db.session.add(link)
+            if form.data['other']:
+                link = Links(url=form.data['other'], girl_id=girl.id)
+                db.session.add(link)
+            db.session.commit()
+
+        flash('The Information have been saved')
+        response = make_response({'msg': 'success'})
+        return response, 200
+
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error
+            ), 'error')
+    return {'msg': 'could not save report'}, 200
+
+
 
 @app.route('/report/<cp_id>', methods=['POST'])
 @limiter.exempt
@@ -539,3 +594,51 @@ def get_credit_history():
 @login_required
 def buy_credits():
     return render_template('buy_credits.html')
+
+@app.route('/index/')
+@login_required
+def reindex():
+    Girl.reindex()
+
+@app.route('/dox/')
+@login_required
+def dox_init():
+    country = Country(short_code='US', name='States of idiots')
+    girl = Girl(country=country,first_name='Anja',last_name='Bitch',phone='0800999123',dob=datetime.today())
+    save_changes(girl)
+    media = Media.query.filter_by(md5='b0a986b141814515bc1ec3cb7a22b16b').first_or_404()
+    media.girl = girl
+    media2 = Media.query.filter_by(md5='94ec8cfdb60c512a2767e8c7d50711be').first_or_404()
+    media2.girl = girl
+    link1 = Links(url='http://facebook.com/user', girl_id=girl.id)
+    save_changes(link1)
+    link2 = Links(url='http://twitter.com/user', girl_id=girl.id)
+    save_changes(link2)
+    link3 = Links(url='http://google.com/user', girl_id=girl.id)
+    save_changes(link3)
+    save_changes(country)
+    save_changes(media)
+    save_changes(media2)
+
+    return media.girl.first_name
+
+
+
+@app.route('/girl/<first_name>-<last_name>')
+def get_girl(first_name,last_name):
+    girl = Girl.query.filter(Girl.first_name == first_name, Girl.last_name == last_name).first_or_404()
+    media = Media.query.filter_by(hidden=False, reported=False, girl_id=girl.id).order_by(
+        Media.upload_time.desc()).paginate(
+        1, app.config['POSTS_PER_PAGE'], True)
+
+
+    return render_template('media_overview.html', girl=girl, media=media,order_by='date')
+
+@app.route('/girls/')
+def get_girls():
+    page = request.args.get('page', 1, type=int)
+    girls = Girl.query.paginate(
+        page, app.config['POSTS_PER_PAGE'], True)
+
+
+    return render_template('girl_overview.html', girls=girls)

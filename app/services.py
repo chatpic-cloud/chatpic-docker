@@ -1,6 +1,5 @@
 import hashlib, requests
 from app import db
-from .models import Media, Comment, CreditTransaction, Role
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 from app import app
@@ -9,6 +8,8 @@ import time
 import base64
 import calendar
 import requests
+from .models import Media, Comment, CreditTransaction, Role
+
 
 
 # form.data['media'],form.data['thumbnail'],form.data['title'],form.data['uploader'],form.data['cp_id']
@@ -144,3 +145,4 @@ def save_new_image(media_in, thumbnail, title, uploader, cp_id):
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
+

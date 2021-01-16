@@ -1,9 +1,27 @@
 from flask_wtf import FlaskForm,RecaptchaField
-from wtforms import StringField, TextAreaField, BooleanField, SubmitField,HiddenField
-from wtforms.validators import DataRequired, Email
+from wtforms import StringField, TextAreaField, BooleanField, SubmitField,HiddenField, DateField
+from wtforms.validators import DataRequired, Email, Optional
 from flask_wtf.file import FileField,FileAllowed, FileRequired
 from werkzeug.utils import secure_filename
 
+class DoxForm(FlaskForm):
+    md5 = StringField('md5',validators=[DataRequired()])
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name',validators=[DataRequired()])
+    country = StringField('Title',validators=[])
+    dob = DateField('birthdate', format='%Y-%m-%d', validators=[Optional()])
+    phone = StringField('Title',validators=[])
+    facebook = StringField('Title',validators=[])
+    instagram = StringField('Title',validators=[])
+    other = StringField('Title',validators=[])
+    mail = StringField('Title',validators=[])
+    address = StringField('Title',validators=[])
+
+
+
+
+
+    submit = SubmitField('Post')
 
 class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()])

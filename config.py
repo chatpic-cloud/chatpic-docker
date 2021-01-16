@@ -46,6 +46,8 @@ class Config(object):
     CAPTCHA_WIDTH = 160
     CAPTCHA_HEIGHT = 60
     SESSION_TYPE = 'sqlalchemy'
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL', 'http://es01:9200')
+
 
 
     ELASTICSEARCH = {"hosts": ["g3eg25dy8o:ezhe6qhw59@test-648873209.eu-west-1.bonsaisearch.net:443"]}

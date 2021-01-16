@@ -14,6 +14,8 @@ from flask_mail import Mail
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
+from elasticsearch import Elasticsearch
+
 
 sentry_sdk.init(
     dsn="https://e9122d47ca9b471e83fcee6e6afaaa12@o488855.ingest.sentry.io/5549957",
@@ -60,4 +62,5 @@ assets.register('js_all', js)
 from app import routes, models
 user_manager = UserManager(app, db, models.User)
 
-
+app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+    if app.config['ELASTICSEARCH_URL'] else None

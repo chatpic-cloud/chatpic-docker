@@ -66,6 +66,9 @@
             <li class="nav-item {% if order_by == "comments" %}active{% endif %}">
                 <a class="nav-link" href="{{ url_for('all_media',order_by='comments')}}">Most comments</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('get_girls')}}">Doxed girls</a>
+            </li>
         </ul>
         <ul class="navbar-nav mr-center">
             <li class="nav-item">

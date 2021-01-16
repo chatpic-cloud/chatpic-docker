@@ -1,0 +1,74 @@
+
+
+                    <DIV CLASS="kim">
+		<SPAN CLASS="meta-who">
+            <SPAN CLASS="meta-who-data"><a href="{{ url_for('get_girl',first_name=med.girl.first_name, last_name=med.girl.last_name)}}">{{ med.girl.first_name }} {{ med.girl.last_name }}</a></SPAN>
+		</SPAN>
+                    </DIV>
+
+{% if med.girl.country %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-flag" aria-hidden="true"></i>
+            {{ med.girl.country.name }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endif %}
+{% if med.girl.dob %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+            {{ med.girl.dob }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endif %}
+{% if med.girl.phone %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            {{ med.girl.phone }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endif %}
+                    {% if med.girl.address %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-address-card" aria-hidden="true"></i>
+            {{ med.girl.address }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endif %}
+{% if med.girl.mail %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            {{ med.girl.mail }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endif %}
+{% for link in med.girl.links %}
+<DIV CLASS="kim">
+	<SPAN CLASS="meta-who">
+        <SPAN CLASS="meta-who-data">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+            {{ link.url }}
+        </SPAN>
+
+    </SPAN>
+</DIV>
+{% endfor %}

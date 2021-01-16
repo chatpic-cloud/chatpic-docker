@@ -1,0 +1,38 @@
+<div class="king-part-q-list">
+
+    <div id="container">
+        <div class="king-q-list-item" id="{{ med.md5 }}">
+            <div class="box">
+			<span class="king-q-item-avatar-meta">
+			</span>
+                <div class="box_thumb">
+                    <A href="{{ url_for('get_girl',first_name=med.first_name, last_name=med.last_name) }}" class="king-hover"></A>
+                    <div data-embed="" class="qstart {% if 'mp4' in med.filename %}video-thumbnail{% endif %}">
+                        <img alt="{{ med.first_name }} {{ med.last_name}}" class="item-img" src="{{ config['CDN_URL'] }}{{ med.media[0].thumbnail }}"></img>
+                    </div>
+                </div>
+
+                <DIV CLASS="yoriz">
+
+                    <DIV CLASS="king-q-item-title">
+                        <A HREF="{{ url_for('get_girl',first_name=med.first_name, last_name=med.last_name) }}">{{ med.first_name }} {{ med.last_name }}</A>
+                    </DIV>
+                    <DIV CLASS="yorizbottom">
+                        <span class="king-view-count">
+					<span class="king-view-count-data">{{ med.media | length }}</span><span
+                                class="king-view-count-pad"> Images</span>
+				</span>
+                    </DIV>
+
+
+
+
+
+                </DIV>
+            </div>
+
+        </div> <!-- END king-q-list-item -->
+    </div>
+
+</div>
+

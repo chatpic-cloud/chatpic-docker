@@ -31,7 +31,15 @@
 			<SPAN CLASS="meta-who-data"><a href="{{ url_for('remove_media',md5=med.md5)}}">Remove Image (Costs 1.000 Credits)</a></SPAN>
 		</SPAN>
 	</DIV>
-
+{% if med.girl %}
+{% include '_dox.html' %}
+{% else%}
+                                                        	<DIV CLASS="kim">
+		<SPAN CLASS="meta-who">
+			<SPAN CLASS="meta-who-data"><a href="" data-toggle="modal" data-target="#doxFormModal">Dox her</a></SPAN>
+		</SPAN>
+	</DIV>
+{% endif %}
 
 																											</DIV>
 
@@ -50,8 +58,82 @@
 
 {% include '_new_comment.html' %}
 
+
 </div>
 
+
+
+
+<form id="doxForm" name="dox" role="form">
+                        {{ dox_form.csrf_token }}
+
+  <div class="modal fade" id="doxFormModal" tabindex="-1" role="dialog" aria-labelledby="DoxGirl"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold darken-3">Dox this girl</h4>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+              <div class="modal-body mx-3">
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="hidden" id="dox1" class="form-control validate valid" name="md5">
+        </div>
+
+
+        <div class="md-form mb-5">
+          <input type="text" id="dox2" class="form-control validate" name="first_name">
+          <label data-error="wrong" data-success="right" for="dox2">First Name</label>
+        </div>
+        <div class="md-form mb-5">
+          <input type="text" id="dox3" class="form-control validate" name="last_name">
+          <label data-error="wrong" data-success="right" for="dox3">Last Name</label>
+        </div>
+        <div class="md-form mb-5">
+          <input type="text" id="dox4" class="form-control validate" name="country">
+          <label data-error="wrong" data-success="right" for="dox4">Country</label>
+        </div>
+        <div class="md-form mb-5">
+          <input type="text" id="dox5" class="form-control validate" name="dob">
+          <label data-error="wrong" data-success="right" for="dox5">Day of birth</label>
+        </div>
+                  <div class="md-form mb-5">
+          <input type="text" id="dox6" class="form-control validate" name="phone">
+          <label data-error="wrong" data-success="right" for="dox6">Phone number</label>
+        </div>
+                           <div class="md-form mb-5">
+          <input type="text" id="dox10" class="form-control validate" name="mail">
+          <label data-error="wrong" data-success="right" for="dox10">Mail Address</label>
+        </div>
+                                     <div class="md-form mb-5">
+          <input type="text" id="dox11" class="form-control validate" name="address">
+          <label data-error="wrong" data-success="right" for="dox11">Address</label>
+        </div>
+                  <div class="md-form mb-5">
+          <input type="text" id="dox7" class="form-control validate" name="facebook">
+          <label data-error="wrong" data-success="right" for="dox7">Facebook Link</label>
+        </div>
+                  <div class="md-form mb-5">
+          <input type="text" id="dox8" class="form-control validate" name="instagram">
+          <label data-error="wrong" data-success="right" for="dox8">Instagram Link</label>
+        </div>
+                  <div class="md-form mb-5">
+          <input type="text" id="dox9" class="form-control validate" name="other">
+          <label data-error="wrong" data-success="right" for="dox9">Other Social Media Link</label>
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button class="btn btn-unique">Send <i class="fas fa-paper-plane-o ml-1"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
 
 
 <form id="reportForm" name="contact" role="form">
@@ -80,7 +162,6 @@
         <div class="md-form mb-5">
           <select class="browser-default custom-select" name="reason">
             <option>Underage</option>
-            <option>Dox (Reveal of personal information)</option>
             <option>DMCA/Copyright</option>
             <option>Bad Content</option>
           </select>

@@ -2,6 +2,8 @@
 
 {% if username is defined %}
 {% set title = 'All images for '+ username %}
+{% elif girl is defined %}
+{% set title = 'All images for '+ girl.first_name + ' ' + girl.last_name %}
 
 	{% elif order_by == "time" %}
 {% set title = 'Latest Images' %}
@@ -17,12 +19,18 @@
 
 
 {% import 'macros/pagination.html' as render_pagination %}
+{% import 'macros/search_pagination.html' as render_search_pagination %}
+
 {% set mode = "overview" %}
 
 
 {% block content %}
                         <div class="alert alert-info" role="alert">      <strong>NEW!</strong> Get your premium credits now and become a special member of our site. See <a href="{{ url_for('buy_credits')}}">your credits</a> for details.
 </div>
+{% if girl is defined %}
+                        <div class="alert alert-info" role="alert">     Displaying all images for {{ girl.first_name }} {{ girl.last_name }}
+</div>
+{% endif %}
 {% if username is defined %}
 													<DIV CLASS="solyan">
 														<DIV CLASS="kim">
@@ -44,13 +52,13 @@
 {% endif %}
 <DIV CLASS="leftside">
 
-	        {% if media.items | length == 0 %}
+	        {% if media['items'] | length == 0 %}
     <div class="alert alert-primary" role="alert">
 Nothing found. Please look for something else.
     </div>
     {% endif %}
 
-{% for med in media.items %}
+{% for med in media['items'] %}
 {% include '_image.html' %}
 
 {% endfor %}
@@ -60,7 +68,7 @@ Nothing found. Please look for something else.
 	{{ render_pagination.render_pagination(media,'user_media',order_by,username=username)}}
 
 	{% elif keyword is defined %}
-{{ render_pagination.render_pagination(media,'w_search',keyword=keyword)}}
+{{ render_search_pagination.render_pagination(keyword=keyword, next_url=next_url, prev_url=prev_url)}}
 {% else %}
 	{{ render_pagination.render_pagination(media,'all_media',order_by,username='')}}
 

@@ -70,6 +70,11 @@ $(document).ready(function(){
                 return false;
         });
 
+     	$("#doxForm").submit(function(event){
+                submitDoxForm();
+                return false;
+        });
+
 	$(function () {
 		$(window).scroll(function () {
 			if ($(this).scrollTop() > 100) {
@@ -96,6 +101,12 @@ $("#modalContactForm").on('show.bs.modal', function(){
  ;
  });
 
+ $("#doxForm").on('show.bs.modal', function(){
+
+    document.getElementById('dox1').value=pathname.split('/')[2];
+ ;
+ });
+
 
 function submitForm(){
     $.ajax({
@@ -113,3 +124,18 @@ function submitForm(){
         }
     });}
 
+function submitDoxForm(){
+    $.ajax({
+        type: "POST",
+        url: '/girl/dox',
+        cache:false,
+        data: $('form#doxForm').serializeJSON(),
+        contentType: "application/json",
+        success: function(response){
+            $("#doxFormModal").modal('hide')
+            window.location.reload(true)
+        },
+        error: function(response){
+            window.location.reload(true);
+        }
+    });}
