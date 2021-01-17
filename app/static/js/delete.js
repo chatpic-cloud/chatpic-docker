@@ -107,6 +107,33 @@ $("#modalContactForm").on('show.bs.modal', function(){
  ;
  });
 
+ $( "#autofill" ).on( "click", function() {
+ vn = document.getElementById('dox2').value;
+ ln = document.getElementById('dox2').value;
+ getData(vn,ln);
+});
+
+function populateForm(data) {
+    document.getElementById('dox4').value=data['country'];
+    document.getElementById('dox5').value=data['dob'];
+    document.getElementById('dox6').value=data['phone'];
+    document.getElementById('dox10').value=data['email'];
+    document.getElementById('dox11').value=data['address'];
+}
+
+
+function getData(firstname,lastname){
+    $.ajax({
+        type: "GET",
+        url: '/search/' + firstname + '/' + lastname,
+        cache:false,
+        dataType: "json",
+        contentType: "application/json",
+        success: populateForm,
+        error: function(response){
+            alert('No Data found, please try different name');
+        }
+    });}
 
 function submitForm(){
     $.ajax({

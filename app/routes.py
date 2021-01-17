@@ -9,10 +9,27 @@ from datetime import datetime, timedelta
 import sqlalchemy_fulltext.modes as FullTextMode
 from sqlalchemy_fulltext import FullText, FullTextSearch
 from flask_mail import Message
+from flask import jsonify
+
 
 from coinbase_commerce.error import WebhookInvalidPayload, SignatureVerificationError
 from coinbase_commerce.webhook import Webhook
 from pprint import pprint
+
+@app.route("/search/<first_name>/<last_name>")
+def girl_search(first_name,last_name):
+    girl = Girl.query.filter_by(first_name=first_name,last_name=last_name).first()
+    girl_dict = {
+        'first_name':girl.first_name,
+        'last_name': girl.last_name,
+        'email': girl.email,
+        'phone': girl.phone,
+        'dob': girl.dob.strftime('%Y-%m-%d'),
+        'country': girl.country.name,
+        'address': girl.address,
+    }
+    return jsonify(girl_dict)
+
 
 
 @app.route("/search")
@@ -285,14 +302,21 @@ def dox():
             db.session.add(media)
             db.session.commit()
             if form.data['facebook']:
-                link = Links(url=form.data['facebook'], girl_id=girl.id)
-                db.session.add(link)
+                link = Links.query.filter_by(url=form.data['facebook']).first()
+                if not link:
+                    link_fb = Links(url=form.data['facebook'], girl_id=girl.id)
+                    db.session.add(link_fb)
             if form.data['instagram']:
-                link = Links(url=form.data['instagram'], girl_id=girl.id)
-                db.session.add(link)
+                link = Links.query.filter_by(url=form.data['instagram']).first()
+                if not link:
+                    link_in = Links(url=form.data['instagram'], girl_id=girl.id)
+                    db.session.add(link_in)
             if form.data['other']:
-                link = Links(url=form.data['other'], girl_id=girl.id)
-                db.session.add(link)
+
+                link = Links.query.filter_by(url=form.data['other']).first()
+                if not link:
+                    link_ot = Links(url=form.data['other'], girl_id=girl.id)
+                    db.session.add(link_ot)
             db.session.commit()
 
         flash('The Information have been saved')
@@ -598,30 +622,7 @@ def buy_credits():
 @app.route('/index/')
 @login_required
 def reindex():
-    Girl.reindex()
-
-@app.route('/dox/')
-@login_required
-def dox_init():
-    country = Country(short_code='US', name='States of idiots')
-    girl = Girl(country=country,first_name='Anja',last_name='Bitch',phone='0800999123',dob=datetime.today())
-    save_changes(girl)
-    media = Media.query.filter_by(md5='b0a986b141814515bc1ec3cb7a22b16b').first_or_404()
-    media.girl = girl
-    media2 = Media.query.filter_by(md5='94ec8cfdb60c512a2767e8c7d50711be').first_or_404()
-    media2.girl = girl
-    link1 = Links(url='http://facebook.com/user', girl_id=girl.id)
-    save_changes(link1)
-    link2 = Links(url='http://twitter.com/user', girl_id=girl.id)
-    save_changes(link2)
-    link3 = Links(url='http://google.com/user', girl_id=girl.id)
-    save_changes(link3)
-    save_changes(country)
-    save_changes(media)
-    save_changes(media2)
-
-    return media.girl.first_name
-
+    Media.reindex()
 
 
 @app.route('/girl/<first_name>-<last_name>')

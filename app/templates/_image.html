@@ -1,5 +1,4 @@
 <div class="king-part-q-list">
-
     <div id="container">
         <div class="king-q-list-item" id="{{ med.md5 }}">
             <div class="box">
@@ -31,7 +30,7 @@
                 <div class="box_thumb">
                     <A href="{{ url_for('show_media',md5=med.md5) }}" class="king-hover"></A>
                     <div data-embed="" class="qstart {% if 'mp4' in med.filename %}video-thumbnail{% endif %}">
-                        <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}{% if mode == " overview"
+                        <img alt="{{ med.title }}" class="item-img" src="{{ config['CDN_URL'] }}{% if mode == "overview"
                                                                                                                         %}{{med.thumbnail
                                                                                                                         }}{%
                                                                                                                         else
