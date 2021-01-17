@@ -638,7 +638,7 @@ def get_girl(first_name,last_name):
 @app.route('/girls/')
 def get_girls():
     page = request.args.get('page', 1, type=int)
-    girls = Girl.query.paginate(
+    girls = Girl.query.order_by(Girl.id.desc()).paginate(
         page, app.config['POSTS_PER_PAGE'], True)
 
 
