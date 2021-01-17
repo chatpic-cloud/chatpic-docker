@@ -101,7 +101,7 @@ $("#modalContactForm").on('show.bs.modal', function(){
  ;
  });
 
- $("#doxForm").on('show.bs.modal', function(){
+ $("#doxFormModal").on('show.bs.modal', function(){
 
     document.getElementById('dox1').value=pathname.split('/')[2];
  ;
