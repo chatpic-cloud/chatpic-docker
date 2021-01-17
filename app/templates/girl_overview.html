@@ -24,8 +24,9 @@ Nothing found. Please look for something else.
     {% endif %}
 
 {% for med in girls['items'] %}
+    {% if not med.media[0].hidden and not med.media[0].reported %}
 {% include '_girl.html' %}
-
+{% endif %}
 {% endfor %}
 
 
