@@ -109,7 +109,7 @@ $("#modalContactForm").on('show.bs.modal', function(){
 
  $( "#autofill" ).on( "click", function() {
  vn = document.getElementById('dox2').value;
- ln = document.getElementById('dox2').value;
+ ln = document.getElementById('dox3').value;
  getData(vn,ln);
 });
 
